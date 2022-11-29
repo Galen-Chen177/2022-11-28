@@ -128,3 +128,44 @@ func LowestCommonAncestor(root, p, q *Tree) *Tree {
 		return right
 	}
 }
+
+// BST 是有顺序的，左边永远小于根节点
+func LowestCommonAncestorBST(root, p, q *Tree) *Tree {
+	if root.Value > p.Value && root.Value > q.Value {
+		return LowestCommonAncestorBST(root.Left, p, q)
+	}
+	if root.Value < q.Value && root.Value < p.Value {
+		return LowestCommonAncestorBST(root.Right, p, q)
+	}
+	return root
+}
+
+func LeaveOrder(root *Tree) [][]int {
+	res := [][]int{}
+
+	visited := map[*Tree]struct{}{}
+	queue := []*Tree{}
+	queue = append(queue, root)
+
+	for len(queue) != 0 {
+		tmp := []int{}
+		flag := 0
+		for _, v := range queue {
+			flag++
+			if _, ok := visited[v]; ok {
+				continue
+			}
+			visited[v] = struct{}{}
+			tmp = append(tmp, v.Value)
+			if v.Left != nil {
+				queue = append(queue, v.Left)
+			}
+			if v.Right != nil {
+				queue = append(queue, v.Right)
+			}
+		}
+		queue = queue[flag:]
+		res = append(res, tmp)
+	}
+	return res
+}

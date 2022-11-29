@@ -33,5 +33,8 @@ func TestInOrder(t *testing.T) {
 func TestIsVailedBST(t *testing.T) {
 	fmt.Println(IsVailedBST1(treeA))
 	fmt.Println(IsVailedBST2(treeA))
+}
 
+func TestLeaveOrder(t *testing.T) {
+	fmt.Println(LeaveOrder(treeA))
 }
