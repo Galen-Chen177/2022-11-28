@@ -50,3 +50,40 @@ func IsAnagram2(s, t string) bool {
 	}
 	return true
 }
+
+// 给定数组，找出所有三个数相加为0的情况
+func ThreeNums(nums []int, target int) [][]int {
+	if len(nums) < 3 {
+		return [][]int{
+			nums,
+		}
+	}
+
+	sort.Ints(nums)
+	res := [][]int{}
+	for i, v := range nums[:len(nums)-2] {
+		tmpM := map[int]struct{}{}
+		for _, v2 := range nums[i+1:] {
+			if _, ok := tmpM[v2]; ok {
+				res = append(res, []int{v, target - v - v2, v2})
+				break
+			} else {
+				tmpM[target-v-v2] = struct{}{}
+			}
+		}
+	}
+
+	return res
+}
+
+func TwoNums(nums []int, target int) []int {
+	tmpM := map[int]struct{}{}
+	for _, v := range nums {
+		if _, ok := tmpM[v]; ok {
+			return []int{target - v, v}
+		} else {
+			tmpM[target-v] = struct{}{}
+		}
+	}
+	return []int{}
+}
