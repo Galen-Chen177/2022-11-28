@@ -14,7 +14,7 @@ insert_final_newline = true
 charset = utf-8
 
 # 4 space indentation
-[*.py]
+[*.go]
 indent_style = space
 indent_size = 4
 
@@ -31,7 +31,3 @@ indent_size = 2
 [{package.json,.travis.yml}]
 indent_style = space
 indent_size = 2
-
-[*.go]
-indent_style = space
-indent_size = 4
