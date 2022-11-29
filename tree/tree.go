@@ -1,6 +1,8 @@
 package tree
 
-import "math"
+import (
+	"math"
+)
 
 type Tree struct {
 	Value       int
@@ -15,7 +17,6 @@ func InOrder(root *Tree) []int {
 	return append(append(InOrder(root.Left), root.Value), InOrder(root.Right)...)
 }
 
-// leetcode 98
 // 判断是否为二叉搜索树
 // 解法1：着眼于整个树，中序遍历，查看是否升序即可
 // 解法2：着眼于最小的数，看左子树是否小于根节点。。。。，需要递归
@@ -140,7 +141,11 @@ func LowestCommonAncestorBST(root, p, q *Tree) *Tree {
 	return root
 }
 
-func LeaveOrder(root *Tree) [][]int {
+// BFS 模板
+func LeaveOrderBFS(root *Tree) [][]int {
+	if root == nil {
+		return [][]int{}
+	}
 	res := [][]int{}
 
 	visited := map[*Tree]struct{}{}
@@ -149,9 +154,8 @@ func LeaveOrder(root *Tree) [][]int {
 
 	for len(queue) != 0 {
 		tmp := []int{}
-		flag := 0
+		flag := len(queue)
 		for _, v := range queue {
-			flag++
 			if _, ok := visited[v]; ok {
 				continue
 			}
@@ -168,4 +172,92 @@ func LeaveOrder(root *Tree) [][]int {
 		res = append(res, tmp)
 	}
 	return res
+}
+
+var (
+	resLeaveOrderDFS = [][]int{}
+	resMaxDepthDFS   = [2]int{}
+)
+
+func LeaveOrderDFS(root *Tree) [][]int {
+	if root == nil {
+		return [][]int{}
+	}
+	_LeaveOrderDFS(root, 0)
+
+	return resLeaveOrderDFS
+}
+
+func _LeaveOrderDFS(root *Tree, leave int) {
+	if root == nil {
+		return
+	}
+	if len(resLeaveOrderDFS) < leave+1 {
+		resLeaveOrderDFS = append(resLeaveOrderDFS, []int{})
+	}
+	resLeaveOrderDFS[leave] = append(resLeaveOrderDFS[leave], root.Value)
+
+	_LeaveOrderDFS(root.Left, leave+1)
+	_LeaveOrderDFS(root.Right, leave+1)
+}
+
+// leetcode 104
+func MaxDepthBFS(root *Tree) [2]int {
+	if root == nil {
+		return [2]int{}
+	}
+	visited := map[*Tree]struct{}{}
+	queue := []*Tree{}
+	queue = append(queue, root)
+	min, max := 0, 0
+	for len(queue) != 0 {
+		tmpLen := len(queue)
+		max++
+		for _, v := range queue {
+			if _, ok := visited[v]; ok {
+				continue
+			}
+			visited[v] = struct{}{}
+			if v.Left == nil && v.Right == nil && min == 0 {
+				min = max
+			}
+
+			if v.Left != nil {
+				queue = append(queue, v.Left)
+			}
+			if v.Right != nil {
+				queue = append(queue, v.Right)
+			}
+		}
+		queue = queue[tmpLen:]
+	}
+	return [2]int{min, max}
+}
+
+// leetcode 111
+func MaxDepthDFS(root *Tree) [2]int {
+	if root == nil {
+		return [2]int{}
+	}
+	_MaxDepthDFS(root, 1)
+	return resMaxDepthDFS
+
+}
+
+func _MaxDepthDFS(root *Tree, leave int) {
+	if root == nil {
+		return
+	}
+	if leave > resMaxDepthDFS[1] {
+		resMaxDepthDFS[1] = leave
+	}
+	if root.Left == nil && root.Right == nil && (resMaxDepthDFS[0] > leave || resMaxDepthDFS[0] == 0) {
+		resMaxDepthDFS[0] = leave
+	}
+	if root.Left != nil {
+		_MaxDepthDFS(root.Left, leave+1)
+	}
+	if root.Right != nil {
+		_MaxDepthDFS(root.Right, leave+1)
+	}
 }

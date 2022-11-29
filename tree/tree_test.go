@@ -19,9 +19,6 @@ var (
 		},
 		Right: &Tree{
 			Value: 6,
-			Left: &Tree{
-				Value: 5,
-			},
 		},
 	}
 )
@@ -30,11 +27,21 @@ func TestInOrder(t *testing.T) {
 	fmt.Println(InOrder(treeA))
 }
 
+// leetcode 98
 func TestIsVailedBST(t *testing.T) {
 	fmt.Println(IsVailedBST1(treeA))
 	fmt.Println(IsVailedBST2(treeA))
 }
 
+// leetcode 102
 func TestLeaveOrder(t *testing.T) {
-	fmt.Println(LeaveOrder(treeA))
+	fmt.Println(LeaveOrderBFS(treeA))
+	fmt.Println(LeaveOrderDFS(treeA))
+}
+
+// leetcode 104  111
+func TestMaxDepthBFS(t *testing.T) {
+	fmt.Println(MaxDepthBFS(treeA))
+	fmt.Println(MaxDepthDFS(treeA))
+
 }
