@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: print
-        echo 'Galen'
+        run: echo 'Galen'
         
   build:
     runs-on: ubuntu-latest
